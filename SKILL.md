@@ -1,7 +1,7 @@
 ---
 name: edsonstock-data
 version: 1.0.0
-description: EdsonStock A股结构数据查询。从 GitHub 公开仓库拉取每交易日盘后自动更新的 15 类 A 股结构化 JSON 数据（ERP 股债利差 5200+ 日、两融 2010 年至今全历史、行业 PE 横截面、涨停连板晋级率、TMT 成交占比、市场宽度指标、期指基差与会员净多空、解禁龙虎榜、跨市场环境、每日复盘），或用内置取数脚本直接从新浪/腾讯/东财/中金所/同花顺公开接口自取。每个数据集都带口径标注：真实公开数据 / 量价代理 / 确认不可得。当用户需要查询 A 股宏观结构数据、股债利差 ERP、两融余额、行业估值、涨停连板、TMT 拥挤度、市场宽度、衍生品持仓、复盘历史时使用。触发词：A股数据、股债利差、ERP、两融、行业PE、涨停、连板、晋级率、TMT占比、市场宽度、TRIN、期指基差、会员净多空、解禁、龙虎榜、A股复盘。
+description: EdsonStock A股结构数据查询。从 GitHub 公开仓库拉取每交易日盘后自动更新的 15 类 A 股结构化 JSON 数据（ERP 股债利差 5200+ 日、两融 2010 年至今全历史、行业 PE 横截面、涨停连板晋级率、TMT 成交占比、市场宽度指标、期指基差与会员净多空、解禁龙虎榜、跨市场环境、每日复盘），或用内置取数脚本直接从新浪/腾讯/东财/中金所/同花顺公开接口自取。每个数据集都带口径标注：真实公开数据 / 量价代理 / 确认不可得。零依赖（Python 3.8+ 标准库），不局限于任何特定 Agent——WorkBuddy、Claude Code、Cursor、自建 Agent 或直接命令行均可使用。当用户需要查询 A 股宏观结构数据、股债利差 ERP、两融余额、行业估值、涨停连板、TMT 拥挤度、市场宽度、衍生品持仓、复盘历史时使用。触发词：A股数据、股债利差、ERP、两融、行业PE、涨停、连板、晋级率、TMT占比、市场宽度、TRIN、期指基差、会员净多空、解禁、龙虎榜、A股复盘。
 argument-hint: edsonstock-data --what list
 allowed-tools: Bash, Read, Write, WebSearch
 homepage: https://github.com/vika520/edsonstock-data
@@ -41,6 +41,8 @@ category: finance
 ## 📝 简介
 
 查询 EdsonStock（A股市场结构工作台）沉淀的 15 类结构化市场数据。数据每交易日 16:00 盘后自动更新并推送到 GitHub 公开仓库，本 skill 直接拉取最新版本，无需安装任何依赖（Python 3.8+ 标准库即可）。
+
+**通用性**：本 skill 不绑定任何特定 Agent 平台。WorkBuddy 放入 `~/.workbuddy/skills/`、Claude Code / Cursor 等放入各自的 skills/commands 目录、或任何能执行 Python 的 agent 直接调用 `scripts/query.py` 均可使用——核心是一个零依赖 CLI，输出人类可读文本，LLM agent 天然适配。
 
 **核心特色：每个数据集都标注了口径**——是真实公开数据、量价代理推算、还是确认拿不到。绝不用代理数据冒充真实资金流。
 
