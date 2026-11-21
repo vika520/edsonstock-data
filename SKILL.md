@@ -1,7 +1,7 @@
 ---
 name: edsonstock-data
 version: 1.0.0
-description: EdsonStock A股结构数据查询。从 GitHub 公开仓库拉取每交易日盘后自动更新的 15 类 A 股结构化 JSON 数据（ERP 股债利差 5200+ 日、两融 2010 年至今全历史、行业 PE 横截面、涨停连板晋级率、TMT 成交占比、市场宽度指标、期指基差与会员净多空、解禁龙虎榜、跨市场环境、每日复盘），或用内置取数脚本直接从新浪/腾讯/东财/中金所/同花顺公开接口自取。每个数据集都带口径标注：真实公开数据 / 量价代理 / 确认不可得。零依赖（Python 3.8+ 标准库），不局限于任何特定 Agent——WorkBuddy、Claude Code、Cursor、自建 Agent 或直接命令行均可使用。当用户需要查询 A 股宏观结构数据、股债利差 ERP、两融余额、行业估值、涨停连板、TMT 拥挤度、市场宽度、衍生品持仓、复盘历史时使用。触发词：A股数据、股债利差、ERP、两融、行业PE、涨停、连板、晋级率、TMT占比、市场宽度、TRIN、期指基差、会员净多空、解禁、龙虎榜、A股复盘。
+description: EdsonStock A股结构数据查询。从 GitHub 公开仓库拉取每交易日盘后自动更新的 16 类 A 股结构化 JSON 数据（ERP 股债利差 5200+ 日、两融 2010 年至今全历史、行业 PE 横截面、涨停连板晋级率、TMT 成交占比、市场宽度指标、期指基差与会员净多空、解禁龙虎榜、跨市场环境、每日复盘），或用内置取数脚本直接从新浪/腾讯/东财/中金所/同花顺公开接口自取。每个数据集都带口径标注：真实公开数据 / 量价代理 / 确认不可得。零依赖（Python 3.8+ 标准库），不局限于任何特定 Agent——WorkBuddy、Claude Code、Cursor、自建 Agent 或直接命令行均可使用。当用户需要查询 A 股宏观结构数据、股债利差 ERP、两融余额、行业估值、涨停连板、TMT 拥挤度、市场宽度、衍生品持仓、复盘历史时使用。触发词：A股数据、股债利差、ERP、两融、行业PE、涨停、连板、晋级率、TMT占比、市场宽度、TRIN、期指基差、会员净多空、解禁、龙虎榜、A股复盘。
 argument-hint: edsonstock-data --what list
 allowed-tools: Bash, Read, Write, WebSearch
 homepage: https://github.com/vika520/edsonstock-data
@@ -85,6 +85,7 @@ python scripts/query.py --what review --tail 2
 | cross | extras.json | 外盘 6 标的 / USDCNY / 中债 10Y（跨时区，非同步快照） |
 | tmt | tmt.json | TMT 四大行业成交占两市比（电子/通信/计算机/传媒，11 板块精确匹配） |
 | flow | flow.json | 市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合 |
+| vix | vix.json | EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权结算价，CBOE 方差互换法自编，非官方复刻）+ Skew + HV30 对照 + 因果检验结论 |
 | workbench | workbench.json | 两市成交额/涨跌家数（新浪全 A 快照）+ 32 只 ETF 日线 + 252 板块 |
 | history | history.json | 长历史回补：行业 PE 中位数 250 日 / 涨停连板 250 日 / 外部环境 460 日 |
 | review | reviews.json | 每日复盘文章：标题/快照/15 栏判读/条件化建议 |

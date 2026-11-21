@@ -39,6 +39,7 @@ FILES = {
     "events":    ("extras.json",    "限售解禁 / 龙虎榜 / 业绩预告事件"),
     "cross":     ("extras.json",    "外盘 6 标的 / USDCNY / 中债 10Y（跨时区，非实时）"),
     "tmt":       ("tmt.json",       "TMT 四大行业成交占比（当日锁定 + 逐日累积）"),
+    "vix":       ("vix.json",       "EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权方差互换）+ Skew + HV30 + 因果检验"),
     "flow":      ("flow.json",      "市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合"),
     "workbench": ("workbench.json", "两市成交额 / 涨跌家数 / 32 只 ETF 日线 / 252 板块快照"),
     "history":   ("history.json",   "长历史：行业PE中位数250日 / 涨停连板250日 / 外部环境460日"),
@@ -186,6 +187,27 @@ def out_generic(d, a, name):
             print("  ", (r.get("digest") or "")[:200])
 
 
+def out_vix(d, a):
+    s = d.get("snapshot") or {}
+    print("EdsonVIX · asof %s · 样本 %s 日（自编，方法同 CBOE/iVIX，r=1.8%% 固定）" %
+          (s.get("asof"), s.get("seriesDays")))
+    print("  VIX=%s（全样本分位 %s%%）  区间 %s~%s 中位 %s" %
+          (s.get("vix"), s.get("percentile"), s.get("min"), s.get("max"), s.get("median")))
+    print("  HV30=%s  Skew=%s" % (s.get("hv30"), s.get("skew")))
+    c = d.get("causal") or {}
+    for h, v in (c.get("fwd") or {}).items():
+        if v:
+            print("  ≥90分位后 %s日：胜率 %s%%（基准 %s%%，p=%s，%s）" %
+                  (h, v.get("winRate"), v.get("baseline"), v.get("p"),
+                   "显著" if v.get("sig") else "不显著"))
+    if a.tail:
+        for r in tail(d.get("rows") or [], a.tail):
+            io = r.get("IO") or {}
+            print("   %s VIX=%s HV30=%s Skew=%s HO=%s MO=%s" %
+                  (r.get("date"), io.get("vix"), r.get("hv30"), io.get("skew"),
+                   (r.get("HO") or {}).get("vix"), (r.get("MO") or {}).get("vix")))
+
+
 def out_list():
     print("EdsonStock 公开数据一览（GitHub raw 每交易日盘后自动更新）\n")
     for k, (f, desc) in FILES.items():
@@ -212,6 +234,8 @@ def main():
     print("# 来源: %s\n" % src)
     if a.what == "erp":
         out_erp(d, a)
+    elif a.what == "vix":
+        out_vix(d, a)
     elif a.what in KEYMAP:
         out_extras(d, a, KEYMAP[a.what])
     else:
