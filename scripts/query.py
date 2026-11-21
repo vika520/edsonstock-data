@@ -40,6 +40,7 @@ FILES = {
     "cross":     ("extras.json",    "外盘 6 标的 / USDCNY / 中债 10Y（跨时区，非实时）"),
     "tmt":       ("tmt.json",       "TMT 四大行业成交占比（当日锁定 + 逐日累积）"),
     "vix":       ("vix.json",       "EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权方差互换）+ Skew + HV30 + 因果检验"),
+    "sth":       ("sth.json",       "STH 成本基础：筹码衰减模型短持成本（宁德/茅台/沪深300篮子）+ z 值通道 + 因果检验"),
     "flow":      ("flow.json",      "市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合"),
     "workbench": ("workbench.json", "两市成交额 / 涨跌家数 / 32 只 ETF 日线 / 252 板块快照"),
     "history":   ("history.json",   "长历史：行业PE中位数250日 / 涨停连板250日 / 外部环境460日"),
@@ -187,6 +188,21 @@ def out_generic(d, a, name):
             print("  ", (r.get("digest") or "")[:200])
 
 
+def out_sth(d, a):
+    snap = d.get("snapshot") or {}
+    for k, s in snap.items():
+        tg = (d.get("targets") or {}).get(k) or {}
+        f60 = (tg.get("fwd") or {}).get("60")
+        print("STH · %s · asof %s" % (k, s.get("asof")))
+        print("  收盘=%s STH80=%s 价差=%s z=%sσ" %
+              (s.get("close"), s.get("sth80"), s.get("spread"), s.get("z")))
+        if f60:
+            print("  −2σ触发 %s 次：60日胜率 %s%%（基准 %s%%，p=%s，%s）" %
+                  (f60.get("events"), f60.get("winRate"), f60.get("baseline"),
+                   f60.get("p"), "显著" if f60.get("sig") else "不显著"))
+    print("口径：筹码衰减模型推算（非真实持仓）；价位未复权；−2σ 为逆势信号")
+
+
 def out_vix(d, a):
     s = d.get("snapshot") or {}
     print("EdsonVIX · asof %s · 样本 %s 日（自编，方法同 CBOE/iVIX，r=1.8%% 固定）" %
@@ -236,6 +252,8 @@ def main():
         out_erp(d, a)
     elif a.what == "vix":
         out_vix(d, a)
+    elif a.what == "sth":
+        out_sth(d, a)
     elif a.what in KEYMAP:
         out_extras(d, a, KEYMAP[a.what])
     else:
