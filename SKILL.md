@@ -86,6 +86,7 @@ python scripts/query.py --what review --tail 2
 | tmt | tmt.json | TMT 四大行业成交占两市比（电子/通信/计算机/传媒，11 板块精确匹配） |
 | flow | flow.json | 市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合 |
 | vix | vix.json | EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权结算价，CBOE 方差互换法自编，非官方复刻）+ Skew + HV30 对照 + 因果检验结论 |
+| vix | vix.json | EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权结算价，CBOE 方差互换法自编，非官方复刻）+ Skew + HV30 对照 + 因果检验结论 |
 | workbench | workbench.json | 两市成交额/涨跌家数（新浪全 A 快照）+ 32 只 ETF 日线 + 252 板块 |
 | history | history.json | 长历史回补：行业 PE 中位数 250 日 / 涨停连板 250 日 / 外部环境 460 日 |
 | review | reviews.json | 每日复盘文章：标题/快照/15 栏判读/条件化建议 |
