@@ -85,8 +85,10 @@ python scripts/query.py --what review --tail 2
 | cross | extras.json | 外盘 6 标的 / USDCNY / 中债 10Y（跨时区，非同步快照） |
 | tmt | tmt.json | TMT 四大行业成交占两市比（电子/通信/计算机/传媒，11 板块精确匹配） |
 | flow | flow.json | 市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合 |
+| mom | mom.json | 散户反向指数：东财股吧真实帖子（4 主题 ETF 吧）+ 词库规则指数，反向情绪，历史不可回补 |
 | sth | sth.json | STH 成本基础：筹码衰减短持成本 + z 通道 + 因果检验（模型推算口径） |
 | vix | vix.json | EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权结算价，CBOE 方差互换法自编，非官方复刻）+ Skew + HV30 对照 + 因果检验结论 |
+| mom | mom.json | 散户反向指数：东财股吧真实帖子（4 主题 ETF 吧）+ 词库规则指数，反向情绪，历史不可回补 |
 | sth | sth.json | STH 成本基础：筹码衰减短持成本 + z 通道 + 因果检验（模型推算口径） |
 | vix | vix.json | EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权结算价，CBOE 方差互换法自编，非官方复刻）+ Skew + HV30 对照 + 因果检验结论 |
 | workbench | workbench.json | 两市成交额/涨跌家数（新浪全 A 快照）+ 32 只 ETF 日线 + 252 板块 |

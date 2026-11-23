@@ -41,6 +41,7 @@ FILES = {
     "tmt":       ("tmt.json",       "TMT 四大行业成交占比（当日锁定 + 逐日累积）"),
     "vix":       ("vix.json",       "EdsonVIX：自编 A 股恐慌指数（中金所 IO 期权方差互换）+ Skew + HV30 + 因果检验"),
     "sth":       ("sth.json",       "STH 成本基础：筹码衰减模型短持成本（宁德/茅台/沪深300篮子）+ z 值通道 + 因果检验"),
+    "mom":       ("mom.json",       "散户反向指数：东财股吧 4 板块真实帖子 + mom-index v0.1 词库（反向情绪，历史不可回补）"),
     "flow":      ("flow.json",      "市场宽度：ADL/麦克莱伦/NH-NL/TRIN/UV-DV/OBV，600 日逐股聚合"),
     "workbench": ("workbench.json", "两市成交额 / 涨跌家数 / 32 只 ETF 日线 / 252 板块快照"),
     "history":   ("history.json",   "长历史：行业PE中位数250日 / 涨停连板250日 / 外部环境460日"),
@@ -188,6 +189,21 @@ def out_generic(d, a, name):
             print("  ", (r.get("digest") or "")[:200])
 
 
+def out_mom(d, a):
+    s = d.get("snapshot") or {}
+    latest = d.get("latest") or {}
+    print("散户反向指数 · asof %s · 样本 %s 日（自 %s 起逐日累积，历史不可回补）" %
+          (s.get("asof"), s.get("recordCount"), (d.get("meta") or {}).get("lockedBase")))
+    print("  综合=%s（%s）| 分位=%s | 买入/卖出子指数 %s / %s" %
+          (s.get("overall"), s.get("interpretation"), s.get("percentile"),
+           s.get("buyAvg"), s.get("sellAvg")))
+    for k, r in (latest.get("sectors") or {}).items():
+        print("  %s：指数 %s，帖子 %s 条，%s" %
+              (r.get("name", k), r.get("index"), r.get("postsUsed"),
+               r.get("interpretation", "")))
+    print("口径：股吧真实帖子标题 + 关键词规则 v0.1；反向含义（越高越危险）；非投资建议")
+
+
 def out_sth(d, a):
     snap = d.get("snapshot") or {}
     for k, s in snap.items():
@@ -254,6 +270,8 @@ def main():
         out_vix(d, a)
     elif a.what == "sth":
         out_sth(d, a)
+    elif a.what == "mom":
+        out_mom(d, a)
     elif a.what in KEYMAP:
         out_extras(d, a, KEYMAP[a.what])
     else:
